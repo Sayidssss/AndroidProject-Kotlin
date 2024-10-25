@@ -14,12 +14,11 @@ android {
 
         // 无痛修改包名：https://www.jianshu.com/p/17327e191d2e
         applicationId 'com.hjq.demo'
+        resConfigs 'zh', 'xxhdpi'
 
         // 仅保留中文语种的资源
-        resConfigs 'zh'
 
         // 仅保留 xxhdpi 图片资源（目前主流分辨率 1920 * 1080）
-        resConfigs 'xxhdpi'
 
         // 混淆配置
         proguardFiles 'proguard-sdk.pro', 'proguard-app.pro'
@@ -39,6 +38,14 @@ android {
             storePassword StorePassword
             keyAlias KeyAlias
             keyPassword KeyPassword
+        }
+    }
+    packagingOptions {
+        jniLibs {
+            excludes += ['META-INF/*******']
+        }
+        resources {
+            excludes += ['META-INF/*******']
         }
     }
 
@@ -104,10 +111,6 @@ android {
         }
     }
 
-    packagingOptions {
-        // 剔除这个包下的所有文件（不会移除签名信息）
-        exclude 'META-INF/*******'
-    }
 
     // AOP 配置（exclude 和 include 二选一）
     // 需要进行配置，否则就会引发冲突，具体表现为：
@@ -118,6 +121,10 @@ android {
         // exclude 'androidx', 'com.google', 'com.squareup', 'org.apache', 'com.alipay', 'com.taobao', 'versions.9'
         // 只对以下包名做 AOP 处理
         include android.defaultConfig.applicationId
+    }
+    namespace 'com.hjq.demo'
+    lint {
+        disable 'HardcodedText', 'ContentDescription'
     }
 
     applicationVariants.all { variant ->

@@ -3,6 +3,11 @@ apply from : '../../common.gradle'
 
 android {
 
+
+    namespace 'com.hjq.umeng'
+    lint {
+        disable 'HardcodedText', 'ContentDescription'
+    }
     defaultConfig {
         // 模块混淆配置
         consumerProguardFiles 'proguard-umeng.pro'

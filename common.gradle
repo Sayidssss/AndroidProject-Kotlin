@@ -42,12 +42,6 @@ android {
     }
 
     // 代码警告配置
-    lintOptions {
-        // 禁用文本硬编码警告
-        disable 'HardcodedText'
-        // 禁用图片描述警告
-        disable 'ContentDescription'
-    }
 }
 
 afterEvaluate {

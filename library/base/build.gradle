@@ -5,6 +5,11 @@ apply from : '../../common.gradle'
 
 android {
 
+
+    namespace 'com.hjq.base'
+    lint {
+        disable 'HardcodedText', 'ContentDescription'
+    }
     defaultConfig {
         // 模块混淆配置
         consumerProguardFiles 'proguard-base.pro'
