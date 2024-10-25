@@ -1,8 +1,11 @@
-apply plugin : 'com.android.application'
-apply plugin : 'android-aspectjx'
-apply plugin : 'kotlin-kapt'
-apply from : '../common.gradle'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'io.github.wurensen.android-aspectjx'
+}
 
+apply from : '../common.gradle'
 // Android 代码规范文档：https://github.com/getActivity/AndroidCodeStandard
 android {
 
