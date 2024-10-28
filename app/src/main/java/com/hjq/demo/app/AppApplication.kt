@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
 import com.hjq.bar.TitleBar
+import com.hjq.demo.BuildConfig
 import com.hjq.demo.R
 import com.hjq.demo.aop.Log
 import com.hjq.demo.http.glide.GlideApp
@@ -20,11 +21,9 @@ import com.hjq.demo.http.model.RequestServer
 import com.hjq.demo.manager.ActivityManager
 import com.hjq.demo.other.*
 import com.hjq.gson.factory.GsonFactory
+import com.hjq.gson.factory.ParseExceptionCallback
 import com.hjq.http.EasyConfig
-import com.hjq.http.config.IRequestApi
 import com.hjq.http.config.IRequestInterceptor
-import com.hjq.http.model.HttpHeaders
-import com.hjq.http.model.HttpParams
 import com.hjq.http.request.HttpRequest
 import com.hjq.toast.Toaster
 import com.hjq.umeng.UmengClient
@@ -149,10 +148,43 @@ class AppApplication : Application() {
                 .into()
 
             // 设置 Json 解析容错监听
-            GsonFactory.setJsonCallback { typeToken: TypeToken<*>, fieldName: String?, jsonToken: JsonToken ->
-                // 上报到 Bugly 错误列表
-                CrashReport.postCatchedException(IllegalArgumentException("类型解析异常：$typeToken#$fieldName，后台返回的类型为：$jsonToken"))
-            }
+            GsonFactory.setParseExceptionCallback(object : ParseExceptionCallback {
+                override fun onParseObjectException(
+                    typeToken: TypeToken<*>,
+                    fieldName: String,
+                    jsonToken: JsonToken
+                ) {
+                    handlerGsonParseException("解析对象析异常：$typeToken#$fieldName，后台返回的类型为：$jsonToken")
+                }
+
+                override fun onParseListItemException(
+                    typeToken: TypeToken<*>,
+                    fieldName: String,
+                    listItemJsonToken: JsonToken
+                ) {
+                    handlerGsonParseException("解析 List 异常：$typeToken#$fieldName，后台返回的条目类型为：$listItemJsonToken")
+                }
+
+                override fun onParseMapItemException(
+                    typeToken: TypeToken<*>,
+                    fieldName: String,
+                    mapItemKey: String,
+                    mapItemJsonToken: JsonToken
+                ) {
+                    handlerGsonParseException("解析 Map 异常：$typeToken#$fieldName，mapItemKey = $mapItemKey，后台返回的条目类型为：$mapItemJsonToken")
+                }
+
+                private fun handlerGsonParseException(message: String) {
+
+                    if (BuildConfig.DEBUG) {
+                        throw IllegalArgumentException(message);
+                    } else {
+                        // 上报到 Bugly 错误列表中
+                        CrashReport.postCatchedException(IllegalArgumentException(message));
+                    }
+
+                }
+            })
 
             // 初始化日志打印
             if (AppConfig.isLogEnable()) {
