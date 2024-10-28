@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'io.github.wurensen.android-aspectjx'
+    id 'com.google.devtools.ksp'
+    id 'android.aop'//最好放在最后一行
 }
 
 apply from : '../common.gradle'
@@ -14,7 +15,7 @@ android {
 
         // 无痛修改包名：https://www.jianshu.com/p/17327e191d2e
         applicationId 'com.hjq.demo'
-        resConfigs 'zh', 'xxhdpi'
+        resourceConfigurations += ['zh', 'xxhdpi']
 
         // 仅保留中文语种的资源
 
@@ -111,17 +112,21 @@ android {
         }
     }
 
-
-    // AOP 配置（exclude 和 include 二选一）
-    // 需要进行配置，否则就会引发冲突，具体表现为：
-    // 第一种：编译不过去，报错：java.util.zip.ZipException：Cause: zip file is empty
-    // 第二种：编译能过去，但运行时报错：ClassNotFoundException: Didn't find class on path: DexPathList
-    aspectjx {
-        // 排除一些第三方库的包名（Gson、 LeakCanary 和 AOP 有冲突）
-        // exclude 'androidx', 'com.google', 'com.squareup', 'org.apache', 'com.alipay', 'com.taobao', 'versions.9'
-        // 只对以下包名做 AOP 处理
+    androidAopConfig {
+        // enabled 为 false 切面不再起作用，默认不写为 true
+        enabled true
+        // include 不设置默认全部扫描，设置后只扫描设置的包名的代码
         include android.defaultConfig.applicationId
+        // exclude 是扫描时排除的包
+        // 可排除 kotlin 相关，提高速度
+        exclude 'kotlin.jvm', 'kotlin.internal','kotlinx.coroutines.internal', 'kotlinx.coroutines.android'
+
+        // verifyLeafExtends 是否开启验证叶子继承，默认打开，@AndroidAopMatchClassMethod 和 @AndroidAopCollectMethod 如果没有设置 LEAF_EXTENDS，可以关闭
+        verifyLeafExtends true
+        //默认关闭，开启在 Build 或 打包后 将会生成切点信息json文件在 app/build/tmp/cutInfo.json
+        cutInfoJson false
     }
+
     namespace 'com.hjq.demo'
     lint {
         disable 'HardcodedText', 'ContentDescription'
@@ -173,7 +178,7 @@ dependencies {
     implementation 'com.github.getActivity:ShapeView:6.0'
 
     // AOP 插件库：https://mvnrepository.com/artifact/org.aspectj/aspectjrt
-    implementation 'org.aspectj:aspectjrt:1.9.6'
+//    implementation 'org.aspectj:aspectjrt:1.9.6'
 
     // 图片加载框架：https://github.com/bumptech/glide
     // 官方使用文档：https://github.com/Muyangmin/glide-docs-cn
@@ -210,6 +215,14 @@ dependencies {
     // 内存泄漏监测框架：https://github.com/square/leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    //必须项 👇
+    implementation 'io.github.FlyJingFish.AndroidAop:android-aop-core:2.2.5'
+    //非必须项 👇这个包提供了一些常见的注解切面
+    implementation 'io.github.FlyJingFish.AndroidAop:android-aop-extra:2.2.5'
+
+    //非必须项 👇，如果你想自定义切面需要用到，⚠️支持Java和Kotlin代码写的切面
+    ksp 'io.github.FlyJingFish.AndroidAop:android-aop-ksp:2.2.5'
 
     // 多语种：https://github.com/getActivity/MultiLanguages
     // 悬浮窗：https://github.com/getActivity/XToast

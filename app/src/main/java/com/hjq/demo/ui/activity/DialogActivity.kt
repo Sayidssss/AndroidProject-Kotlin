@@ -442,9 +442,8 @@ class DialogActivity : AppActivity() {
                     .show()
             }
             R.id.btn_dialog_custom -> {
-
                 // 自定义对话框
-                BaseDialog.Builder<BaseDialog.Builder<*>>(this)
+                BaseDialog.Builder(this)
                     .setContentView(R.layout.custom_dialog)
                     .setAnimStyle(AnimAction.ANIM_SCALE) //.setText(id, "我是预设置的文本")
                     .setOnClickListener(R.id.btn_dialog_custom_ok, object : BaseDialog.OnClickListener<Button> {

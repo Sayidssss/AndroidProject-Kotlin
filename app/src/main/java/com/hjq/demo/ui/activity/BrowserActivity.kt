@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.*
 import android.webkit.WebView
 import android.widget.ProgressBar
+import com.flyjingfish.android_aop_core.annotations.CheckNetwork
 import com.hjq.demo.R
 import com.hjq.demo.action.StatusAction
 import com.hjq.demo.aop.CheckNet
@@ -33,7 +34,7 @@ class BrowserActivity : AppActivity(), StatusAction, OnRefreshListener {
     companion object {
 
         const val INTENT_KEY_IN_URL: String = "url"
-
+        @CheckNetwork
         @CheckNet
         @Log
         fun start(context: Context, url: String) {
