@@ -208,13 +208,13 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.6'
 
     // 腾讯 MMKV：https://github.com/Tencent/MMKV
-    implementation 'com.tencent:mmkv-static:1.2.10'
+    implementation 'com.tencent:mmkv-static:1.2.14'
 
     // 内存泄漏监测框架：https://github.com/square/leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-    previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+    previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
 
-    //必须项 👇
+    //AndroidAOP 新切面工具 https://github.com/FlyJingFish/AndroidAOP
     implementation 'io.github.FlyJingFish.AndroidAop:android-aop-core:2.2.5'
     //非必须项 👇这个包提供了一些常见的注解切面
     implementation 'io.github.FlyJingFish.AndroidAop:android-aop-extra:2.2.5'
