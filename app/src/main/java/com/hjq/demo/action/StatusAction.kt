@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hjq.demo.action
 
 import android.graphics.drawable.Drawable
@@ -58,6 +60,7 @@ interface StatusAction {
     /**
      * 显示错误提示
      */
+    @Suppress("DEPRECATION")
     fun showError(listener: OnRetryListener?) {
         getStatusLayout()?.let {
             val manager: ConnectivityManager? = ContextCompat.getSystemService(it.context, ConnectivityManager::class.java)

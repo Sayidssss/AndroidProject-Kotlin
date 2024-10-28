@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.hjq.demo.aop
 
 import android.app.Application
@@ -11,6 +13,7 @@ import com.hjq.demo.manager.ActivityManager
 import com.hjq.toast.Toaster
 
 class CheckNetworkCut : BasePointCut<CheckNet> {
+    @Suppress("DEPRECATION")
     override fun invoke(joinPoint: ProceedJoinPoint, anno: CheckNet): Any? {
         val application: Application = ActivityManager.getInstance().getApplication()
         val manager: ConnectivityManager? = ContextCompat.getSystemService(application, ConnectivityManager::class.java)
