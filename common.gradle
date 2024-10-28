@@ -2,6 +2,7 @@ apply plugin: 'kotlin-android'
 
 // 通用配置
 android {
+    buildFeatures.buildConfig = true
 
     // 编译源码版本
     compileSdkVersion 34
