@@ -59,8 +59,6 @@ android {
             // 调试模式开关
             debuggable true
             jniDebuggable true
-            // 压缩对齐开关
-            zipAlignEnabled false
             // 移除无用的资源
             shrinkResources false
             // 代码混淆开关
@@ -90,8 +88,6 @@ android {
             // 调试模式开关
             debuggable false
             jniDebuggable false
-            // 压缩对齐开关
-            zipAlignEnabled true
             // 移除无用的资源
             shrinkResources true
             // 代码混淆开关
@@ -132,9 +128,9 @@ android {
         disable 'HardcodedText', 'ContentDescription'
     }
 
-    applicationVariants.all { variant ->
+    applicationVariants.configureEach { variant ->
         // apk 输出文件名配置
-        variant.outputs.all { output ->
+        variant.outputs.configureEach { output ->
             outputFileName = rootProject.getName() + '_v' + variant.versionName + '_' + variant.buildType.name
             if (variant.buildType.name == buildTypes.release.getName()) {
                 outputFileName += '_' + new Date().format('MMdd')
@@ -155,7 +151,7 @@ dependencies {
     implementation project(':library:umeng')
 
     // 权限请求框架：https://github.com/getActivity/XXPermissions
-    implementation 'com.github.getActivity:XXPermissions:12.3'
+    implementation 'com.github.getActivity:XXPermissions:20.0'
 
     // 标题栏框架：https://github.com/getActivity/TitleBar
     implementation 'com.github.getActivity:TitleBar:9.2'

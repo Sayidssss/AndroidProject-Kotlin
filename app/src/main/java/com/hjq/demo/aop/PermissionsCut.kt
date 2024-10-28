@@ -32,16 +32,17 @@ class PermissionsCut : BasePointCut<Permissions> {
         XXPermissions.with(activity)
             .permission(*anno.value)
             .request(object : PermissionCallback() {
-                override fun onGranted(permissions: MutableList<String?>?, all: Boolean) {
-                    if (all) {
+                override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
+                    if (allGranted) {
                         try {
                             // 获得权限，执行原方法
-                           joinPoint.proceed()
+                            joinPoint.proceed()
                         } catch (e: Throwable) {
                             CrashReport.postCatchedException(e)
                         }
                     }
                 }
+
             })
         return null
     }
