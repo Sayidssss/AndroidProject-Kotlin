@@ -7,6 +7,8 @@ import android.net.NetworkInfo
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.JsonSyntaxException
 import com.hjq.demo.R
+import com.hjq.demo.http.exception.ResultException
+import com.hjq.demo.http.exception.TokenException
 import com.hjq.demo.manager.ActivityManager
 import com.hjq.demo.ui.activity.LoginActivity
 import com.hjq.gson.factory.GsonFactory
@@ -14,6 +16,7 @@ import com.hjq.http.EasyLog
 import com.hjq.http.config.IRequestApi
 import com.hjq.http.config.IRequestHandler
 import com.hjq.http.exception.*
+import com.hjq.http.request.HttpRequest
 import com.tencent.mmkv.MMKV
 import okhttp3.Headers
 import okhttp3.Response
@@ -37,8 +40,33 @@ class RequestHandler constructor(private val application: Application) : IReques
 
     private val mmkv: MMKV = MMKV.mmkvWithID("http_cache_id")
 
-    @Throws(Exception::class)
-    override fun requestSucceed(lifecycle: LifecycleOwner, api: IRequestApi, response: Response, type: Type): Any? {
+    override fun readCache(httpRequest: HttpRequest<*>, type: Type, cacheTime: Long): Any? {
+        val cacheKey: String? = GsonFactory.getSingletonGson().toJson(httpRequest.requestApi)
+        val cacheValue: String? = mmkv.getString(cacheKey, null)
+        if ((cacheValue == null) || ("" == cacheValue) || ("{}" == cacheValue)) {
+            return null
+        }
+        EasyLog.printLog(httpRequest,"---------- cacheKey ----------")
+        EasyLog.printKeyValue(httpRequest,"cacheKey",cacheKey)
+        EasyLog.printLog(httpRequest,"---------- cacheValue ----------")
+        EasyLog.printJson(httpRequest,cacheValue)
+        return GsonFactory.getSingletonGson().fromJson(cacheValue, type)
+    }
+
+    override fun writeCache(httpRequest: HttpRequest<*>, response: Response, result: Any): Boolean {
+        val cacheKey: String? = GsonFactory.getSingletonGson().toJson(httpRequest.requestApi)
+        val cacheValue: String? = GsonFactory.getSingletonGson().toJson(result)
+        if ((cacheValue == null) || ("" == cacheValue) || ("{}" == cacheValue)) {
+            return false
+        }
+        EasyLog.printLog(httpRequest,"---------- cacheKey ----------")
+        EasyLog.printKeyValue(httpRequest,"cacheKey",cacheKey)
+        EasyLog.printLog(httpRequest,"---------- cacheValue ----------")
+        EasyLog.printJson(httpRequest,cacheValue)
+        return mmkv.putString(cacheKey, cacheValue).commit()
+    }
+
+    override fun requestSuccess(httpRequest: HttpRequest<*>, response: Response, type: Type): Any {
         if ((Response::class.java == type)) {
             return response
         }
@@ -52,21 +80,21 @@ class RequestHandler constructor(private val application: Application) : IReques
         if ((Headers::class.java == type)) {
             return response.headers()
         }
-        val body: ResponseBody = response.body() ?: return null
-        if ((InputStream::class.java == type)) {
+        val body: ResponseBody? = response.body()
+        if (body!=null &&(InputStream::class.java == type)) {
             return body.byteStream()
         }
 
         val text: String
         try {
-            text = body.string()
+            text = body!!.string()
         } catch (e: IOException) {
             // 返回结果读取异常
             throw DataException(application.getString(R.string.http_data_explain_error), e)
         }
 
         // 打印这个 Json 或者文本
-        EasyLog.json(text)
+        EasyLog.printJson(httpRequest,text)
         if ((String::class.java == type)) {
             return text
         }
@@ -89,7 +117,7 @@ class RequestHandler constructor(private val application: Application) : IReques
             }
         }
 
-        val result: Any?
+        val result: Any
         try {
             result = GsonFactory.getSingletonGson().fromJson(text, type)
         } catch (e: JsonSyntaxException) {
@@ -112,7 +140,7 @@ class RequestHandler constructor(private val application: Application) : IReques
         return result
     }
 
-    override fun requestFail(lifecycle: LifecycleOwner, api: IRequestApi, e: Exception): Exception {
+    override fun requestFail(httpRequest: HttpRequest<*>, e: Throwable): Throwable {
         // 判断这个异常是不是自己抛的
         if (e is HttpException) {
             if (e is TokenException) {
@@ -145,31 +173,5 @@ class RequestHandler constructor(private val application: Application) : IReques
             return CancelException("", e)
         }
         return HttpException(e.message, e)
-    }
-
-    override fun readCache(lifecycle: LifecycleOwner, api: IRequestApi, type: Type): Any? {
-        val cacheKey: String? = GsonFactory.getSingletonGson().toJson(api)
-        val cacheValue: String? = mmkv.getString(cacheKey, null)
-        if ((cacheValue == null) || ("" == cacheValue) || ("{}" == cacheValue)) {
-            return null
-        }
-        EasyLog.print("---------- cacheKey ----------")
-        EasyLog.json(cacheKey)
-        EasyLog.print("---------- cacheValue ----------")
-        EasyLog.json(cacheValue)
-        return GsonFactory.getSingletonGson().fromJson(cacheValue, type)
-    }
-
-    override fun writeCache(lifecycle: LifecycleOwner, api: IRequestApi, response: Response, result: Any?): Boolean {
-        val cacheKey: String? = GsonFactory.getSingletonGson().toJson(api)
-        val cacheValue: String? = GsonFactory.getSingletonGson().toJson(result)
-        if ((cacheValue == null) || ("" == cacheValue) || ("{}" == cacheValue)) {
-            return false
-        }
-        EasyLog.print("---------- cacheKey ----------")
-        EasyLog.json(cacheKey)
-        EasyLog.print("---------- cacheValue ----------")
-        EasyLog.json(cacheValue)
-        return mmkv.putString(cacheKey, cacheValue).commit()
     }
 }

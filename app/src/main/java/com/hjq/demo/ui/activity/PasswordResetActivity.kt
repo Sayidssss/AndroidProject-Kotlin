@@ -17,7 +17,7 @@ import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.demo.ui.dialog.TipsDialog
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.HttpCallbackProxy
 
 /**
  *    author : Android 轮子哥
@@ -109,9 +109,9 @@ class PasswordResetActivity : AppActivity(), OnEditorActionListener {
                     setCode(verifyCode)
                     setPassword(firstPassword?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
+                .request(object : HttpCallbackProxy<HttpData<Void?>>(this) {
 
-                    override fun onSucceed(data: HttpData<Void?>) {
+                    override fun onHttpSuccess(data: HttpData<Void?>) {
                         TipsDialog.Builder(this@PasswordResetActivity)
                             .setIcon(TipsDialog.ICON_FINISH)
                             .setMessage(R.string.password_reset_success)

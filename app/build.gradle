@@ -160,7 +160,7 @@ dependencies {
     implementation 'com.github.getActivity:Toaster:12.6'
 
     // 网络请求框架：https://github.com/getActivity/EasyHttp
-    implementation 'com.github.getActivity:EasyHttp:10.2'
+    implementation 'com.github.getActivity:EasyHttp:12.8'
     // OkHttp 框架：https://github.com/square/okhttp
     // noinspection GradleDependency
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'

@@ -11,6 +11,7 @@ import com.hjq.demo.http.api.GetCodeApi
 import com.hjq.demo.http.api.VerifyCodeApi
 import com.hjq.demo.http.model.HttpData
 import com.hjq.http.EasyHttp
+import com.hjq.http.listener.HttpCallbackProxy
 import com.hjq.http.listener.OnHttpListener
 import com.hjq.toast.Toaster
 import com.hjq.widget.view.CountdownView
@@ -69,15 +70,14 @@ class SafeDialog {
                         .api(GetCodeApi().apply {
                             setPhone(phoneNumber)
                         })
-                        .request(object : OnHttpListener<HttpData<Void?>?> {
-
-                            override fun onSucceed(data: HttpData<Void?>?) {
+                        .request(object : HttpCallbackProxy<HttpData<Void>>(null) {
+                            override fun onHttpSuccess(result: HttpData<Void>?) {
                                 Toaster.show(R.string.common_code_send_hint)
                                 countdownView?.start()
                                 setCancelable(false)
                             }
 
-                            override fun onFail(e: Exception) {
+                            override fun onHttpFail(e: Throwable) {
                                 Toaster.show(e.message)
                             }
                         })
@@ -99,14 +99,14 @@ class SafeDialog {
                             setPhone(phoneNumber)
                             setCode(codeView?.text.toString())
                         })
-                        .request(object : OnHttpListener<HttpData<Void?>?> {
+                        .request(object : HttpCallbackProxy<HttpData<Void>>(null) {
 
-                            override fun onSucceed(data: HttpData<Void?>?) {
+                            override fun onHttpSuccess(data: HttpData<Void>) {
                                 autoDismiss()
                                 listener?.onConfirm(getDialog(), phoneNumber, codeView?.text.toString())
                             }
 
-                            override fun onFail(e: Exception) {
+                            override fun onHttpFail(e: Throwable) {
                                 Toaster.show(e.message)
                             }
                         })

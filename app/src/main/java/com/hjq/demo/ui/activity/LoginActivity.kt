@@ -28,7 +28,7 @@ import com.hjq.demo.ui.fragment.MineFragment
 import com.hjq.demo.wxapi.WXEntryActivity
 import com.hjq.http.EasyConfig
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.HttpCallbackProxy
 import com.hjq.umeng.Platform
 import com.hjq.umeng.UmengClient
 import com.hjq.umeng.UmengLogin
@@ -173,15 +173,15 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                     setPhone(phoneView?.text.toString())
                     setPassword(passwordView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<LoginApi.Bean?>>(this) {
+                .request(object : HttpCallbackProxy<HttpData<LoginApi.Bean?>>(this) {
 
-                    override fun onStart(call: Call) {
+                    override fun onHttpStart(call: Call) {
                         commitView?.showProgress()
                     }
 
-                    override fun onEnd(call: Call) {}
+                    override fun onHttpEnd(call: Call) {}
 
-                    override fun onSucceed(data: HttpData<LoginApi.Bean?>) {
+                    override fun onHttpSuccess(data: HttpData<LoginApi.Bean?>) {
                         // 更新 Token
                         EasyConfig.getInstance()
                             .addParam("token", data.getData()?.getToken())
@@ -195,8 +195,8 @@ class LoginActivity : AppActivity(), UmengLogin.OnLoginListener,
                         }, 1000)
                     }
 
-                    override fun onFail(e: Exception?) {
-                        super.onFail(e)
+                    override fun onHttpFail(e: Throwable) {
+                        super.onHttpFail(e)
                         postDelayed({ commitView?.showError(3000) }, 1000)
                     }
                 })

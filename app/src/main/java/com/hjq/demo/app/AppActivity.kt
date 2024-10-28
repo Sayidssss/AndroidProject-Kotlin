@@ -174,21 +174,21 @@ abstract class AppActivity : BaseActivity(),
     /**
      * [OnHttpListener]
      */
-    override fun onStart(call: Call) {
+    override fun onHttpStart(call: Call) {
         showDialog()
     }
 
-    override fun onSucceed(result: Any) {
-        if (result is HttpData<*>) {
+    override fun onHttpSuccess(result: Any?){
+    if (result is HttpData<*>) {
             toast(result.getMessage())
         }
     }
 
-    override fun onFail(e: Exception) {
+    override fun onHttpFail(e: Throwable) {
         toast(e.message)
     }
 
-    override fun onEnd(call: Call) {
+    override fun onHttpEnd(call: Call) {
         hideDialog()
     }
 

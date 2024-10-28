@@ -40,22 +40,22 @@ abstract class AppFragment<A : AppActivity> : BaseFragment<A>(),
     /**
      * [OnHttpListener]
      */
-    override fun onStart(call: Call) {
+    override fun onHttpStart(call: Call) {
         showDialog()
     }
 
-    override fun onSucceed(result: Any) {
+    override fun onHttpSuccess(result: Any) {
         if (result !is HttpData<*>) {
             return
         }
         toast(result.getMessage())
     }
 
-    override fun onFail(e: Exception) {
+    override fun onHttpFail(e: Throwable) {
         toast(e.message)
     }
 
-    override fun onEnd(call: Call) {
+    override fun onHttpEnd(call: Call) {
         hideDialog()
     }
 }

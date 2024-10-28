@@ -13,7 +13,7 @@ import com.hjq.demo.http.api.VerifyCodeApi
 import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.manager.InputTextManager
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.HttpCallbackProxy
 import com.hjq.widget.view.CountdownView
 
 /**
@@ -74,8 +74,8 @@ class PasswordForgetActivity : AppActivity(), OnEditorActionListener {
                 .api(GetCodeApi().apply {
                     setPhone(phoneView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
-                    override fun onSucceed(data: HttpData<Void?>) {
+                .request(object : HttpCallbackProxy<HttpData<Void?>>(this) {
+                    override fun onHttpSuccess(data: HttpData<Void?>) {
                         toast(R.string.common_code_send_hint)
                         countdownView?.start()
                     }
@@ -106,9 +106,9 @@ class PasswordForgetActivity : AppActivity(), OnEditorActionListener {
                     setPhone(phoneView?.text.toString())
                     setCode(codeView?.text.toString())
                 })
-                .request(object : HttpCallback<HttpData<Void?>>(this) {
+                .request(object : HttpCallbackProxy<HttpData<Void?>>(this) {
 
-                    override fun onSucceed(data: HttpData<Void?>) {
+                    override fun onHttpSuccess(data: HttpData<Void?>) {
                         PasswordResetActivity.start(this@PasswordForgetActivity,
                             phoneView?.text.toString(), codeView?.text.toString())
                         finish()

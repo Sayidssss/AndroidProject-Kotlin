@@ -18,7 +18,7 @@ import com.hjq.demo.http.model.HttpData
 import com.hjq.demo.ui.dialog.AddressDialog
 import com.hjq.demo.ui.dialog.InputDialog
 import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallback
+import com.hjq.http.listener.HttpCallbackProxy
 import com.hjq.http.model.FileContentResolver
 import com.hjq.widget.layout.SettingBar
 import java.io.File
@@ -186,8 +186,8 @@ class PersonalDataActivity : AppActivity() {
             .api(UpdateImageApi().apply {
                 setImage(file)
             })
-            .request(object : HttpCallback<HttpData<String?>>(this) {
-                override fun onSucceed(data: HttpData<String?>) {
+            .request(object : HttpCallbackProxy<HttpData<String?>>(this) {
+                override fun onHttpSuccess(data: HttpData<String?>) {
                     avatarUrl = Uri.parse(data.getData())
                     avatarView?.let {
                         GlideApp.with(this@PersonalDataActivity)
