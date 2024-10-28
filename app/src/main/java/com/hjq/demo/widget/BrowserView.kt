@@ -198,6 +198,7 @@ class BrowserView  @JvmOverloads constructor(
         /**
          * 加载错误
          */
+        @Suppress("OVERRIDE_DEPRECATION")
         override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
             super.onReceivedError(view, errorCode, description, failingUrl)
         }
@@ -213,6 +214,7 @@ class BrowserView  @JvmOverloads constructor(
         /**
          * 跳转到其他链接
          */
+        @Suppress("OVERRIDE_DEPRECATION")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             Timber.i("WebView shouldOverrideUrlLoading：%s", url)
             val scheme: String = Uri.parse(url).scheme ?: return false

@@ -90,6 +90,7 @@ class BrowserFragment : AppFragment<AppActivity>(), StatusAction, OnRefreshListe
         /**
          * 网页加载错误时回调，这个方法会在 onPageFinished 之前调用
          */
+        @Suppress("OVERRIDE_DEPRECATION")
         override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
             // 这里为什么要用延迟呢？因为加载出错之后会先调用 onReceivedError 再调用 onPageFinished
             post {
@@ -117,6 +118,7 @@ class BrowserFragment : AppFragment<AppActivity>(), StatusAction, OnRefreshListe
         /**
          * 跳转到其他链接
          */
+        @Suppress("OVERRIDE_DEPRECATION")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             val scheme: String = Uri.parse(url).scheme ?: return true
             when (scheme.lowercase(Locale.getDefault())) {

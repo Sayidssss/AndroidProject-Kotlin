@@ -531,6 +531,7 @@ class DialogActivity : AppActivity() {
             .showAsDropDown(view)
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // 友盟回调

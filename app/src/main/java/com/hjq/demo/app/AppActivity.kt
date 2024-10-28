@@ -160,6 +160,7 @@ abstract class AppActivity : BaseActivity(),
         onBackPressed()
     }
 
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun startActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
         super.startActivityForResult(intent, requestCode, options)
         overridePendingTransition(R.anim.right_in_activity, R.anim.right_out_activity)

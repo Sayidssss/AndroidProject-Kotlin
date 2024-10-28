@@ -135,7 +135,7 @@ abstract class BaseActivity : AppCompatActivity(), ActivityAction,
         return super.dispatchKeyEvent(event)
     }
 
-    @Suppress("deprecation")
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun startActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
         // 隐藏软键，避免内存泄漏
         hideKeyboard(currentFocus)
@@ -162,7 +162,7 @@ abstract class BaseActivity : AppCompatActivity(), ActivityAction,
         startActivityForResult(intent, requestCode, options)
     }
 
-    @Suppress("deprecation")
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         var callback: OnActivityCallback?
         if ((activityCallbacks.get(requestCode).also { callback = it }) != null) {
