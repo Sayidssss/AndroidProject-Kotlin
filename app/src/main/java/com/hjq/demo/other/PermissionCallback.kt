@@ -9,7 +9,7 @@ import com.hjq.demo.ui.dialog.MessageDialog
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
-import com.hjq.toast.ToastUtils
+import com.hjq.toast.Toaster
 import java.util.*
 import com.hjq.demo.R
 
@@ -27,10 +27,10 @@ abstract class PermissionCallback : OnPermissionCallback {
             return
         }
         if (permissions.size == 1 && (Permission.ACCESS_BACKGROUND_LOCATION == permissions[0])) {
-            ToastUtils.show(R.string.common_permission_fail_4)
+            Toaster.show(R.string.common_permission_fail_4)
             return
         }
-        ToastUtils.show(R.string.common_permission_fail_1)
+        Toaster.show(R.string.common_permission_fail_1)
     }
 
     /**

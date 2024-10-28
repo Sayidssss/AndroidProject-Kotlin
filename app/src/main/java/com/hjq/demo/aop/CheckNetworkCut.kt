@@ -8,7 +8,7 @@ import com.flyjingfish.android_aop_annotation.ProceedJoinPoint
 import com.flyjingfish.android_aop_annotation.base.BasePointCut
 import com.hjq.demo.R
 import com.hjq.demo.manager.ActivityManager
-import com.hjq.toast.ToastUtils
+import com.hjq.toast.Toaster
 
 class CheckNetworkCut : BasePointCut<CheckNet> {
     override fun invoke(joinPoint: ProceedJoinPoint, anno: CheckNet): Any? {
@@ -19,10 +19,10 @@ class CheckNetworkCut : BasePointCut<CheckNet> {
             // 判断网络是否连接
             if (info == null || !info.isConnected) {
                 if(anno.toastText.isNotEmpty()){
-                    ToastUtils.show(anno.toastText)
+                    Toaster.show(anno.toastText)
                     return null;
                 }
-                ToastUtils.show(R.string.common_network_hint)
+                Toaster.show(R.string.common_network_hint)
                 return null;
             }
         }

@@ -156,8 +156,8 @@ dependencies {
     // 标题栏框架：https://github.com/getActivity/TitleBar
     implementation 'com.github.getActivity:TitleBar:9.2'
 
-    // 吐司框架：https://github.com/getActivity/ToastUtils
-    implementation 'com.github.getActivity:ToastUtils:9.5'
+    // 吐司框架：https://github.com/getActivity/Toaster
+    implementation 'com.github.getActivity:Toaster:12.6'
 
     // 网络请求框架：https://github.com/getActivity/EasyHttp
     implementation 'com.github.getActivity:EasyHttp:10.2'
