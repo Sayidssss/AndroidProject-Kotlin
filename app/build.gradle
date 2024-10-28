@@ -183,7 +183,9 @@ dependencies {
     ksp 'com.github.bumptech.glide:compiler:4.14.2'
 
     // 沉浸式框架：https://github.com/gyf-dev/ImmersionBar
-    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    // kotlin扩展（可选）
+    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
 
     // 手势 ImageView：https://github.com/Baseflow/PhotoView
     implementation 'com.github.Baseflow:PhotoView:2.3.0'
