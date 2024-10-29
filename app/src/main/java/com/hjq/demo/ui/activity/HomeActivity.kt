@@ -1,5 +1,6 @@
 package com.hjq.demo.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.os.Bundle
@@ -129,6 +130,8 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
             .navigationBarColor(R.color.white)
     }
 
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         if (!DoubleClickHelper.isOnDoubleClick()) {
             toast(R.string.home_exit_hint)

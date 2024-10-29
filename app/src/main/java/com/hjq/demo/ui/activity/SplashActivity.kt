@@ -1,6 +1,7 @@
 package com.hjq.demo.ui.activity
 
 import android.animation.*
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.*
 import com.airbnb.lottie.LottieAnimationView
@@ -72,6 +73,8 @@ class SplashActivity : AppActivity() {
             .hideBar(BarHide.FLAG_HIDE_BAR)
     }
 
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         // 禁用返回键
         //super.onBackPressed();
