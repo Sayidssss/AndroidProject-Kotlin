@@ -19,3 +19,5 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build with Gradle
       run: ./gradlew build aR
+    - name: show error log
+      run: cat /home/runner/work/AndroidProject-Kotlin/AndroidProject-Kotlin/app/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
