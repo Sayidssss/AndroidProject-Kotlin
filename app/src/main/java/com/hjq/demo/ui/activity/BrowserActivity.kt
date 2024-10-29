@@ -34,7 +34,6 @@ class BrowserActivity : AppActivity(), StatusAction, OnRefreshListener {
     companion object {
 
         const val INTENT_KEY_IN_URL: String = "url"
-        @CheckNetwork
         @CheckNet
         @Log
         fun start(context: Context, url: String) {
