@@ -1,6 +1,7 @@
 package com.hjq.demo.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -268,6 +269,8 @@ class CrashActivity : AppActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         // 重启应用
         RestartActivity.restart(this)
